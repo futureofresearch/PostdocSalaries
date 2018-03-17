@@ -1,4 +1,4 @@
-# PostocSalaries
+# PostdocSalaries
 
 This repository contains the code for the analysis on postdoc salary data performed for the paper: *Assessing the Landscape of U.S. Postdoctoral Salaries*.
 
