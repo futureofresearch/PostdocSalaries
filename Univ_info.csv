@@ -7,7 +7,7 @@ University_FoiA,ZIP,County,State,2017_NIH,NIH_top
   Michigan State University,48824,Ingham,MI,58498845,23
   Rutgers University,8901,Middlesex,NJ,,
   University of Indiana Bloomington,47405,Monroe,IN,,
-  Urbana-Champaign Campus,,Champaign,IL,59075305,22
+University of Illinois Urbana-Champaign,,Champaign,IL,59075305,22
   UM_ANN-ARBOR,48109,Washtenaw,MI,509085057,1
   University of Arizona,85721,Pima,AZ,94318748,15
   University of South Florida,33620,Hillsborough,FL,112893917,14
@@ -50,3 +50,4 @@ University_FoiA,ZIP,County,State,2017_NIH,NIH_top
   University of Texas Health Sciences Center at Tyler,,,TX,4631602,37
   ALBANY,12144,Albany,NY,,
   Chicago Campus,,,IL,,
+San Antonio,,,TX,,
