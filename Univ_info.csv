@@ -1,53 +1,53 @@
-University_FoiA,ZIP,County,State,2017_NIH,NIH_top
-  Texas A&M University,77843,Brazos,TX,54227184,25
-  The Ohio State University-Main Campus,43210,Franklin,OH,169695210,5
-  University of Texas Austin,78712,Travis,TX,89735655,17
-  TWIN CITIES,55455,Hennepin ,MN,,
-  University of Florida,32611,Alachua,FL,160921834,8
-  Michigan State University,48824,Ingham,MI,58498845,23
-  Rutgers University,8901,Middlesex,NJ,,
-  University of Indiana Bloomington,47405,Monroe,IN,,
-University of Illinois Urbana-Champaign,,Champaign,IL,59075305,22
-  UM_ANN-ARBOR,48109,Washtenaw,MI,509085057,1
-  University of Arizona,85721,Pima,AZ,94318748,15
-  University of South Florida,33620,Hillsborough,FL,112893917,14
-  University of Texas Arlington,76019,Tarrant,TX,5359802,36
-  Florida State University,32306,Leon,FL,35790197,29
-  Purdue University,47907,Tippecanoe,IN,44760764,27
-  University of Maryland College Park,20742,Prince George's,MD,46844045,26
-  University of Cincinnati,45220,Hamilton,OH,61819753,20
-  Iowa State University,50011,Story,IA,14335615,33
-  North Carolina State,27695,Wake,NC,23340270,30
-  University of Colorado Boulder,80309,Boulder,CO,42178364,28
-  Boston University,2215,Suffolk,MA,166528745,6
-  University of Utah,84112,Salt Lake,UT,164450849,7
-  University of Iowa,52242,Johnson,IA,143891423,11
-  University of Indiana Indianapolis,46202,Marion,IN,,
-  BUFFALO,14260,Erie,NY,,
-  University of North Carolina Chapel Hill,27599,Orange,NC,410444710,2
-  Wayne State University  ,48202,Wayne,MI,54715110,24
-  STONY BROOK,11794,Suffolk,NY,64163204,19
-  University of Texas Dallas,75080,Dallas,TX,16802808,31
-  University of Virginia,22904,Charlottesville,VA,139312357,13
-  University of Colorado Denver,80204,Denver,CO,215712348,3
-  University of California Santa Barbara,93106,Santa Barbara,CA,15591184,32
-  University of Texas at El Paso,79968,El Paso,TX,13421652,34
-  BINGHAMTON,13902,Broome,NY,6560455,35
-  University of Maryland Baltimore County,21250,Baltimore City,MD,,
-  DULUTH,55812,St. Louis,MN,753217,38
-  UM_DEARBORN,48128,Wayne,MI,,
-  Seattle,98122,King,WA,,
-  University of Indiana Northwest,46408,Lake,IN,,
-  Bothell,98011,King,WA,,
-  University of Texas Southwestern,75390,Dallas,TX,177844392,4
-  University of Maryland Baltimore,21201,Baltimore City,MD,158833091,9
-  University of Texas MD Anderson Cancer Center,77030,Harris,TX,143619648,12
-  University of Texas Health Sciences Center at Houston,77030,Harris,TX,92117751,16
-  University of Texas Health Sciences Center at San Antonio,78229,Bexar,TX,60921626,21
-  UPSTATE,13210,Onondaga,NY,,
-  University of Massachusetts Medical School,1655,Worcester ,MA,152964364,10
-  University of Texas Medical Branch at Galveston,77555,Galveston,TX,78355960,18
-  University of Texas Health Sciences Center at Tyler,,,TX,4631602,37
-  ALBANY,12144,Albany,NY,,
-  Chicago Campus,,,IL,,
-San Antonio,,,TX,,
+University_FoiA,State,2017_NIH,NIH_top,NSF R&D 16,NSF_RD_top
+  ALBANY,NY,7350426,40,120232,30
+  BINGHAMTON,NY,6594927,41,85192,34
+  Boston University,MA,172328687,5,395921,18
+  Bothell,WA,,,,
+  BUFFALO,NY,60031673,22,389569,20
+  DULUTH,MN,753217,44,27528,37
+  Florida State University,FL,35790197,29,268288,24
+  Iowa State University,IA,14372729,35,328385,23
+  Michigan State University,MI,58498845,25,613369,8
+  North Carolina State,NC,23340270,31,489918,12
+  Purdue University,IN,44760764,27,,
+  Rutgers University,NJ,,,,
+  Seattle,WA,,,2050,40
+  STONY BROOK,NY,64163204,19,230621,26
+  Texas A&M University,TX,12938393,37,,
+  The Ohio State University-Main Campus,OH,170811121,6,818464,4
+  TWIN CITIES,MN,,,910181,3
+  UM_ANN-ARBOR,MI,521788658,1,1436448,1
+  UM_DEARBORN,MI,,,7904,39
+  University of Arizona,AZ,96151324,15,604464,9
+  University of California Santa Barbara,CA,15591184,34,230139,27
+  University of Cincinnati,OH,62109922,20,430579,16
+  University of Colorado Boulder,CO,42178364,28,453123,14
+  University of Colorado Denver,CO,216158884,3,,
+  University of Florida,FL,161032753,9,791294,5
+  University of Indiana Bloomington,IN,35400337.00,30,508766,11
+  University of Indiana Indianapolis,IN,,,,
+  University of Indiana Northwest,IN,,,,
+  University of Iowa,IA,151818373,11,473362,13
+  University of Maryland Baltimore,MD,168627327,8,393876,19
+  University of Maryland Baltimore County,MD,8909991.00,38,70166,35
+  University of Maryland College Park,MD,46844045,26,539388,10
+  University of Massachusetts Medical School,MA,152964364,10,253099,25
+  University of North Carolina Chapel Hill,NC,419977336,2,1045338,2
+  University of South Florida,FL,112931906,15,,
+  University of Texas Arlington,TX,5359802,42,87386,33
+  University of Texas at El Paso,TX,13421652,36,91330,32
+  University of Texas Austin,TX,90049589,17,621692,7
+  University of Texas Dallas,TX,16802808,32,106205,31
+  University of Texas Health Sciences Center at Houston,TX,92182217,16,,
+  University of Texas Health Sciences Center at San Antonio,TX,61464020,21,194885,29
+  University of Texas Health Sciences Center at Tyler,TX,4631602,43,11799,38
+  University of Texas MD Anderson Cancer Center,TX,147621223,12,,
+  University of Texas Medical Branch at Galveston,TX,80775431,18,,
+  University of Texas Southwestern,TX,177958152,4,442666,15
+  University of Utah,UT,170579644,7,350212,21
+  University of Virginia,VA,139400908,13,397458,17
+  UPSTATE,NY,15785296,33,,
+  Wayne State University  ,MI,59217562,23,221537,28
+San Antonio,TX,8602632.00,39,59831,36
+University of Illinois Chicago,IL,119262646.00,14,337296,22
+University of Illinois Urbana-Champaign,IL,59119349,24,625180,6
