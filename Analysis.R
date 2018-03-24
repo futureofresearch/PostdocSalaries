@@ -257,7 +257,7 @@ p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NIH_order"])[2]), y=cv), colou
 
 require(cowplot)
 p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-ggsave("Figure4.tiff", plot = p, width = 8, height = 6) 
+ggsave("Figures/Figure4.tiff", plot = p, width = 8, height = 6) 
 
 
 #Figure 4 auxiliary : NSF
@@ -290,41 +290,41 @@ p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colou
   theme(axis.text.x = element_text(size=9))
 
 p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-ggsave("Figure4_Aux1 .tiff", plot = p, width = 8, height = 6) 
+ggsave("Figures/Aux_Figure4 .tiff", plot = p, width = 8, height = 6) 
 
-#Figure 4 auxiliary : NSF + NIH
-
-temp <- na.omit(data[,c("NIH_grants","NSF","AdjSalary")]) #NB some universities that may have NIH or NSF data, but not both, are not included
-temp$Grants <-temp$NIH_grants + temp$NSF
-
-# i. Boxplots
-temp_char <- transform(temp, NSF_order= as.character(NSF_order))
-
-p1 <- ggplot(temp_char) +  
-  geom_boxplot(aes(x=NSF_order, y=AdjSalary),width=0.8, alpha=0.8, color = "lightskyblue4",
-               outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, 
-               outlier.color="lightskyblue4", fill = "lightskyblue3")  +
-  ylim(c(0,100000)) + 
-  xlab("Descending order of NSF award amount (2017)" ) +
-  scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
-  theme(axis.text.x = element_text(size=9)) +
-  ylab("Annual salary (USD)") 
-
-# ii. CV loess
-cv <- c()
-for (j in 1:range(temp[,"NSF_order"])[2]){
-  a<- which(temp$NSF_order == j)
-  cv <- c(cv, sd(temp$AdjSalary[a], na.rm=T) /mean(temp$AdjSalary[a], na.rm=T) )
-}
-
-p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colour="grey60") + 
-  ylab("Coefficient of variation") + xlab("") +
-  scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
-  theme(axis.text.x = element_text(size=9))
-
-p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-ggsave("Figure4_Aux1 .tiff", plot = p, width = 8, height = 6) 
-
+# #Figure 4 auxiliary : NSF + NIH
+# 
+# temp <- na.omit(data[,c("NIH_grants","NSF","AdjSalary")]) #NB some universities that may have NIH or NSF data, but not both, are not included
+# temp$Grants <-temp$NIH_grants + temp$NSF
+# 
+# # i. Boxplots
+# temp_char <- transform(temp, NSF_order= as.character(NSF_order))
+# 
+# p1 <- ggplot(temp_char) +  
+#   geom_boxplot(aes(x=NSF_order, y=AdjSalary),width=0.8, alpha=0.8, color = "lightskyblue4",
+#                outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, 
+#                outlier.color="lightskyblue4", fill = "lightskyblue3")  +
+#   ylim(c(0,100000)) + 
+#   xlab("Descending order of NSF award amount (2017)" ) +
+#   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
+#   theme(axis.text.x = element_text(size=9)) +
+#   ylab("Annual salary (USD)") 
+# 
+# # ii. CV loess
+# cv <- c()
+# for (j in 1:range(temp[,"NSF_order"])[2]){
+#   a<- which(temp$NSF_order == j)
+#   cv <- c(cv, sd(temp$AdjSalary[a], na.rm=T) /mean(temp$AdjSalary[a], na.rm=T) )
+# }
+# 
+# p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colour="grey60") + 
+#   ylab("Coefficient of variation") + xlab("") +
+#   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
+#   theme(axis.text.x = element_text(size=9))
+# 
+# p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
+# ggsave("Figure4_Aux .tiff", plot = p, width = 8, height = 6) 
+# 
 
 
 ######################################################################
