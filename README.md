@@ -9,12 +9,14 @@ To protect the identity and sensitive information of the postdocs, the raw salar
 • The analysis of the preprocessed data is in the file _Analysis.R_ run using R version 3.4.3. The packages `dplyr`, `tidyr`, and `ggplot2` need to be installed for the code to run.
 
 • The `Tables/` folder holds auxiliary tables used for the analysis of these data: 
+
 		1. _STEM.csv_ carries the STEM/non-STEM annotation used for each department in the dataset
+		
 		2. _TableNIH.csv_ contains the NIH and NSF funding information as described in the manuscript
 
 • The `Figures/` folder holds the figures as they appear in the table. Feel free to download and use for your presentations but please reference this github repo or the original paper.
 
 The folder also contains variations of the figures or auxiliary figures that relate to this work. Details of how these figures were created will be found at _Analysis.R_
 
-	
+
 
