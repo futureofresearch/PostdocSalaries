@@ -280,13 +280,41 @@ ggsave("Figures/Figure3.tiff", width = 8, height = 6)
  
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #E. Explore the effect of institutional funding to postdoc salaries
+#NIH
 
+#create summary Table 
+temp <- na.omit(data[,c("NIH_order","NIH_grants", "PostdocNum")])
+temp <- unique(temp)
+
+NIH_total <- sum(temp$NIH_grants)
+temp$pct_in_set <- round((temp$NIH_grants/NIH_total)*100,2)
+temp <- temp[order(temp$NIH_order),]
+temp <- cbind(temp$NIH_order,temp$pct_in_set,temp$PostdocNum)
+colnames(temp)<-c("Order","pct_NIH_USD","no_postdocs")
+
+tiff("Figures/Aux_Figure 4.tiff")
+plot(temp[,2],temp[,3],pch=20, ylab= "Postdoc number", xlab="% NIH $ in set")
+abline(lm(temp[,3]~temp[,2]), lty=2)
+dev.off()
+
+cor.test(temp[,2], temp[,3])
+
+# Pearson's product-moment correlation
+# 
+# data:  temp[, 2] and temp[, 3]
+# t = 7.0242, df = 43, p-value = 0.00000001187
+# alternative hypothesis: true correlation is not equal to 0
+# 95 percent confidence interval:
+# 0.5569473 0.8435208
+# sample estimates:
+# cor 
+# 0.7309787 
+
+write.csv(temp, file="Figures/TableNIH.csv" )
 #Figure 4
 
-#NIH
-temp <- na.omit(data[,c("NIH_order","NIH_grants","AdjSalary")])
-
 # i. Boxplots
+temp <- na.omit(data[,c("NIH_order","NIH_grants","AdjSalary")])
 temp_char <- transform(temp, NIH_order= as.character(NIH_order))
 
 p1 <- ggplot(temp_char) +  
@@ -316,7 +344,7 @@ p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
 ggsave("Figures/Figure4.tiff", plot = p, width = 8, height = 6) 
 
 
-#Figure 4 auxiliary : NSF
+#Supplementary Figure 3 : NSF
 
 temp <- na.omit(data[,c("NSF_order","NSF","AdjSalary")])
 
