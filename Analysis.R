@@ -45,6 +45,91 @@ dev.off()
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # B. STEM non-STEM
+temp <-  na.omit(data[,c("Institution","AdjSalary", "Department" , "State")])
+temp <- temp[which(temp$Department!=""),]
+
+stem <- read.csv("STEM.csv", col.names=c("Department","is_stem"))
+
+temp$stem <- ""
+  for (i in 1:dim(temp)[1]){
+    if (temp$Department[i] %in% stem$Department[which(stem$is_stem=="Y")]){
+      temp$stem[i] <- "Yes"
+    } else if (temp$Department[i] %in% stem$Department[which(stem$is_stem=="N")]){
+      temp$stem[i] <- "No"
+    }else{
+      temp$stem[i] <- "-"
+    }
+  }
+
+universities <- intersect(temp$Institution[which(temp$stem=="No")],
+                          temp$Institution[which(temp$stem=="Yes")])
+
+index<-c()
+for (university in universities){ 
+  index <- c(index, which(temp$Institution == university))}
+temp <- temp[index,]
+
+options(scipen=5)
+tiff("Figures/Supplementary Figure 2A.tiff")
+hist(temp$AdjSalary[which(temp$stem=="No")], breaks=10, col="blue4", 
+     ylim=c(0,200), xlab="Postdoc salaries (USD)", main="")
+dev.off()
+
+temp <- as.data.frame(temp)
+temp <- transform(temp, State = as.character(State))
+temp <- transform(temp, Region = as.character(Region))
+
+for (i in 1:dim(temp)[1]){
+  if (length(which( ne == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "NE"
+  }else if (length(which( s == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "S"
+  }else if(length(which( mw == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "MW"
+  }else if(length(which( w == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "W"
+  }
+}
+
+p <- ggplot(temp) 
+p + geom_boxplot(aes(x=Institution, y=AdjSalary, fill=stem)) +
+  ylab("Annual salary (USD)") +
+  scale_fill_manual(values=c( "grey60","lightblue", "coral")) +
+  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank()) +
+  facet_wrap(~Region, scales="free_x", strip.position = "bottom")
+
+ggsave("Figures/Supplementary Figure 2B.tiff", width = 8, height = 6) 
+
+#Figure 1 Supplement
+#3. US cultural geography - salary
+
+ne <-c("NY","MA","NJ")
+s <-c("FL","NC","TX","MD","VA")
+mw <-c("MN","IA","MI","OH","IL", "IN")
+w <-c("WA","AZ","CA","CO","UT")
+
+temp <- as.matrix(na.omit(data[,c("AdjSalary", "State", "State")]))
+colnames(temp)<- c("AdjSalary", "Region",   "State")
+for (i in 1:dim(temp)[1]){
+  if (length(which( ne == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "NE"
+  }else if (length(which( s == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "S"
+  }else if(length(which( mw == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "MW"
+  }else if(length(which( w == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "W"
+  }
+}
+temp <- as.data.frame(temp)
+temp <- transform(temp, AdjSalary = as.character(AdjSalary))
+temp <- transform(temp, AdjSalary = as.numeric(AdjSalary))
+
+g <- ggplot(temp) 
+g + geom_boxplot(aes(x=Region, y=AdjSalary))
+
+ggsave("Suppl1_stem.tiff", width = 8, height = 6) 
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # C. Compare male/female salaries
@@ -375,79 +460,4 @@ p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colou
 
 p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
 ggsave("Figures/Supplementary Figure3 .tiff", plot = p, width = 8, height = 6) 
-
-
-######################################################################
-#Figure SUPPLEMENT 2B
-#HUMANITIES VS STEM
-sal <- read.csv("~/FoR/Info-Data/Salaries/salary_data_(non-stem_annot).csv")
-a <- which(sal$NON.STEM == "Y")
-universities <- unique(sal$Institution[a])
-index<-c()
-for (university in universities){ 
-  index <- c(index, which(sal$Institution == university))}
-
-tempS <- sal[index,]
-tempS <- transform(tempS, AdjSalary = as.numeric(AdjSalary))
-tempS <- transform(tempS, STEM = as.character(STEM))
-
-ne <-c("NY","MA","NJ")
-s <-c("FL","NC","TX","MD","VA")
-mw <-c("MN","IA","MI","OH","IL", "IN")
-w <-c("WA","AZ","CA","CO","UT")
-
-tempS$Region <- "-"
-tempS <- as.data.frame(tempS)
-tempS <- transform(tempS, State = as.character(State))
-tempS <- transform(tempS, Region = as.character(Region))
-for (i in 1:dim(tempS)[1]){
-  if (length(which( ne == tempS[i,"State"])) > 0){
-    tempS[i,"Region"] <- "NE"
-  }else if (length(which( s == tempS[i,"State"])) > 0){
-    tempS[i,"Region"] <- "S"
-  }else if(length(which( mw == tempS[i,"State"])) > 0){
-    tempS[i,"Region"] <- "MW"
-  }else if(length(which( w == tempS[i,"State"])) > 0){
-    tempS[i,"Region"] <- "W"
-  }
-}
-
-p <- ggplot(tempS) 
-p + geom_boxplot(aes(x=Institution, y=AdjSalary, fill=STEM)) +
-                   ylab("Annual salary (USD)") +
-                   scale_fill_manual(values=c( "grey60","lightblue", "coral")) +
-  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank()) +
-  facet_wrap(~Region, scales="free_x", strip.position = "bottom")
-                 
-ggsave("Suppl2B_stem.tiff", width = 8, height = 6) 
-
-#Figure 1 Supplement
-#3. US cultural geography - salary
-
-ne <-c("NY","MA","NJ")
-s <-c("FL","NC","TX","MD","VA")
-mw <-c("MN","IA","MI","OH","IL", "IN")
-w <-c("WA","AZ","CA","CO","UT")
-
-temp <- as.matrix(na.omit(data[,c("AdjSalary", "State", "State")]))
-colnames(temp)<- c("AdjSalary", "Region",   "State")
-for (i in 1:dim(temp)[1]){
-  if (length(which( ne == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "NE"
-  }else if (length(which( s == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "S"
-  }else if(length(which( mw == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "MW"
-  }else if(length(which( w == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "W"
-  }
-}
-temp <- as.data.frame(temp)
-temp <- transform(temp, AdjSalary = as.character(AdjSalary))
-temp <- transform(temp, AdjSalary = as.numeric(AdjSalary))
-
-g <- ggplot(temp) 
-g + geom_boxplot(aes(x=Region, y=AdjSalary))
-
-ggsave("Suppl1_stem.tiff", width = 8, height = 6) 
 
