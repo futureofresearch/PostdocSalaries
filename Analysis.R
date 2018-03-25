@@ -1,12 +1,12 @@
 data <- read.csv("Tables/Preprocessed_dataset.csv", row.names = 1)
-data <- data[data$AdjSalary!=0,] #Remove 71 entries where salary is reported as zero, which is impossible (?)
+data <- data[which(data$AdjSalary>=23660),] #Remove entries where salary is reported as less than 23660
 
 data <- data[data$Institution!= "University of Illinois Chicago",] # Remove as number of postdocs (69) is much lower than expected 
-#With Chicago eliminated, I need to re-calculate the NIH/NSF award order
+
 
 ne <-c("NY","MA","NJ")
 s <-c("FL","NC","TX","MD","VA")
-mw <-c("MN","IA","MI","OH","IL", "IN")
+mw <-c("MN","IA","MI","OH","IL", "IN", "WI")
 w <-c("WA","AZ","CA","CO","UT")
 
 ######################################################################
@@ -14,8 +14,40 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 ######################################################################
+# A. Analysis of salaries by region
 
-# A. Compare male/female salaries
+temp <- na.omit(data[,c("AdjSalary","State","State", "Institution","PostdocNum" )])
+colnames(temp)<- c("AdjSalary", "State", "Region", "Institution","PostdocNum" )
+
+temp <- as.data.frame(temp)
+temp <- transform(temp, State = as.character(State))
+temp <- transform(temp, Region = as.character(Region))
+
+for (i in 1:dim(temp)[1]){
+  if (length(which( ne == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "NE"
+  }else if (length(which( s == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "S"
+  }else if(length(which( mw == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "MW"
+  }else if(length(which( w == temp[i,"State"])) > 0){
+    temp[i,"Region"] <- "W"
+  }
+}
+
+#Supplementary Figure 1
+options(scipen=5)
+tiff("Figures/Supplementary Figure1.tiff")
+boxplot(temp$AdjSalary[which(temp$Region=="MW")], temp$AdjSalary[which(temp$Region=="NE")],
+        temp$AdjSalary[which(temp$Region=="S")], temp$AdjSalary[which(temp$Region=="W")],
+        pch=20, names = c("MW","NE","S","W"), xlab="Region", ylab="Salaries" )
+dev.off()
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# B. STEM non-STEM
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# C. Compare male/female salaries
 
 temp <- na.omit(data[,c("AdjSalary","Genni","State","State", "Institution","PostdocNum" )])
 colnames(temp)<- c("AdjSalary","Genni", "State", "Region", "Institution","PostdocNum" )
@@ -40,6 +72,15 @@ for (i in 1:dim(temp)[1]){
     temp[i,"Region"] <- "W"
   }
 }
+
+#fix number of postdocs for the purpose of ordering the plot
+#(postdocs with salaries below the national minimum were eliminated, but still counted in the original data)
+
+institutions <- unique(temp$Institution)
+for (ins in institutions){
+  a <- which(temp$Institution==ins)
+  temp$PostdocNum[a] <- length(a)
+  }
 
 #Figure 1
 
@@ -89,39 +130,39 @@ W <- which(temp["Genni"]=="F")
 M <- which(temp["Genni"]=="M")
 t.test(temp[W,"AdjSalary"],temp[M,"AdjSalary"])
 
-'''	Welch Two Sample t-test
+'''		Welch Two Sample t-test
 
 data:  temp[W, "AdjSalary"] and temp[M, "AdjSalary"]
-t = -3.3125, df = 4334.1, p-value = 0.0009322
+t = -3.7716, df = 4644.6, p-value = 0.0001642
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
--1383.2070  -354.6563
+-1307.7340  -413.1981
 sample estimates:
 mean of x mean of y 
-48098.13  48967.07 '''
+48587.42  49447.89 '''
 
 #Northeast only
 ne_F <- which(temp["Region"]=="NE" & temp["Genni"]=="F")
 ne_M <- which(temp["Region"]=="NE" & temp["Genni"]=="M")
 t.test(temp[ne_F,"AdjSalary"],temp[ne_M,"AdjSalary"])
 
-'''	Welch Two Sample t-test
+'''		Welch Two Sample t-test
 
 data:  temp[ne_F, "AdjSalary"] and temp[ne_M, "AdjSalary"]
-t = -2.9103, df = 633.93, p-value = 0.003737
+t = -3.0959, df = 628.52, p-value = 0.002049
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
--2754.0795  -534.8913
+-2792.6471  -624.8997
 sample estimates:
 mean of x mean of y 
-46180.74  47825.23 '''
+46262.53  47971.30  '''
 
 #West only
 w_F <- which(temp["Region"]=="W" & temp["Genni"]=="F")
 w_M <- which(temp["Region"]=="W" & temp["Genni"]=="M")
 t.test(temp[w_F,"AdjSalary"],temp[w_M,"AdjSalary"])
 
-'''	Welch Two Sample t-test
+''' 	Welch Two Sample t-test
 
 data:  temp[w_F, "AdjSalary"] and temp[w_M, "AdjSalary"]
 t = -0.56349, df = 817.89, p-value = 0.5733
@@ -130,23 +171,23 @@ alternative hypothesis: true difference in means is not equal to 0
 -1736.7773   962.0168
 sample estimates:
 mean of x mean of y 
-54988.60  55375.98 '''
+54988.60  55375.98  '''
 
 #Midwest only
 mw_F <- which(temp["Region"]=="MW" & temp["Genni"]=="F")
 mw_M <- which(temp["Region"]=="MW" & temp["Genni"]=="M")
 t.test(temp[mw_F,"AdjSalary"],temp[mw_M,"AdjSalary"])
 
-'''	Welch Two Sample t-test
+'''		Welch Two Sample t-test
 
 data:  temp[mw_F, "AdjSalary"] and temp[mw_M, "AdjSalary"]
-t = -1.3741, df = 1628.3, p-value = 0.1696
+t = -1.9012, df = 1996.7, p-value = 0.05742
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
--1280.572   225.500
+-1119.00028    17.37373
 sample estimates:
 mean of x mean of y 
-46566.54  47094.08 '''
+47815.46  48366.28  '''
 
 #South only
 s_F <- which(temp["Region"]=="S" & temp["Genni"]=="F")
@@ -164,12 +205,26 @@ sample estimates:
 mean of x mean of y 
 46303.28  48246.84 '''
 
-######################################################################
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#B. Estimate the effect of different postdoc title descriptors in salary
+#D. Estimate the effect of different postdoc title descriptors in salary
 
-temp <- na.omit(data[,c("AdjSalary","Intern","Teaching","Fellow","Associate","Scholar","Researcher", "Trainee","Senior",
+temp <- na.omit(data[,c("AdjSalary","Institution", "Intern","Teaching","Fellow","Associate","Scholar","Researcher", "Trainee","Senior",
                         "Clinical","Assistant", "Faculty")])
+titles <- c("Intern","Teaching","Fellow","Associate","Scholar","Researcher", "Trainee","Senior",
+           "Clinical","Assistant", "Faculty")
+
+#Print-out # of postdocs per title
+for (title in titles){
+  print(title)
+  print(sum(temp[,title]))
+}
+
+#Print-out # of institutions using the title
+for (title in titles){
+  print(title)
+  print(length(unique(temp$Institution[which(temp[,title]==1)])))
+}
 
 LM <- lm(AdjSalary ~ Intern + Teaching + Fellow + Associate + Scholar + Researcher + Trainee + Senior + Clinical + Assistant + Faculty, temp)
 
@@ -182,39 +237,40 @@ Faculty, data = temp)
 
 Residuals:
 Min     1Q Median     3Q    Max 
--47238  -3978   -509   2608  64307 
+-25280  -4018   -926   2133  64307 
 
 Coefficients:
 Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  48019.1      248.8 192.985  < 2e-16 ***
-Intern      -17445.9      406.8 -42.887  < 2e-16 ***
-Teaching       812.0     2062.0   0.394  0.69372    
-Fellow        -361.1      265.3  -1.361  0.17359    
-Associate      684.7      250.5   2.733  0.00628 ** 
-Scholar        487.5      382.3   1.275  0.20235    
-Researcher    -266.0      162.8  -1.633  0.10239    
-Trainee       1736.5      551.1   3.151  0.00163 ** 
-Senior        6151.3      364.9  16.859  < 2e-16 ***
-Clinical      9689.7     2377.3   4.076 4.61e-05 ***
-Assistant    -2691.6     3180.6  -0.846  0.39743    
-Faculty      26891.3     3872.3   6.944 3.97e-12 ***
+(Intercept)  48104.2      217.2 221.442  < 2e-16 ***
+Intern       -9621.4      416.3 -23.114  < 2e-16 ***
+Teaching       701.2     1818.2   0.386  0.69976    
+Fellow         298.1      232.9   1.280  0.20061    
+Associate      914.0      217.2   4.208 2.60e-05 ***
+Scholar        513.2      337.0   1.523  0.12780    
+Researcher    -285.7      140.4  -2.035  0.04190 *  
+Trainee       1608.7      435.3   3.695  0.00022 ***
+Senior        5468.3      317.8  17.206  < 2e-16 ***
+Clinical      9231.2     2096.4   4.403 1.07e-05 ***
+Assistant    -2525.6     2804.7  -0.900  0.36788    
+Faculty      26767.0     3414.8   7.839 4.89e-15 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 8627 on 13494 degrees of freedom
-Multiple R-squared:  0.1933,	Adjusted R-squared:  0.1927 
-F-statistic:   294 on 11 and 13494 DF,  p-value: < 2.2e-16'''
+Residual standard error: 7607 on 13911 degrees of freedom
+Multiple R-squared:  0.08917,	Adjusted R-squared:  0.08845 
+F-statistic: 123.8 on 11 and 13911 DF,  p-value: < 2.2e-16'''
 
 #Figure 3
 for (i in 1:dim(temp)[1]){
-  for (j in 2:dim(temp)[2]){
+  for (j in 3:dim(temp)[2]){
     temp[i,j] = temp[i,1]* temp[i,j]}
 } 
 
 temp[temp == 0] <- NA
 library(reshape2)
-t<- melt(temp[,2:12])
+t<- melt(temp[,3:13])
 
+options(scipen=5)
 p <- ggplot(t,aes(x=variable, y=value)) + geom_violin(fill="grey60", width = 1.25)
 p +  geom_boxplot(width=0.1, alpha=0.8,outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, outlier.color="lightskyblue4", fill = "lightskyblue3", color = "lightskyblue4") +
   xlab("Title descriptions")+ylab("Annual salary (USD)") 
@@ -222,8 +278,8 @@ p +  geom_boxplot(width=0.1, alpha=0.8,outlier.size = 1, outlier.shape = 3, outl
 ggsave("Figures/Figure3.tiff", width = 8, height = 6)
 
  
-######################################################################
-#C. Explore the effect of institutional funding to postdoc salaries
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#E. Explore the effect of institutional funding to postdoc salaries
 
 #Figure 4
 
@@ -272,7 +328,7 @@ p1 <- ggplot(temp_char) +
                outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, 
                outlier.color="lightskyblue4", fill = "lightskyblue3")  +
   ylim(c(0,100000)) + 
-  xlab("Descending order of NSF award amount (2017)" ) +
+  xlab("Descending order of NSF R&D award amount (2017)" ) +
   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
   theme(axis.text.x = element_text(size=9)) +
   ylab("Annual salary (USD)") 
@@ -290,41 +346,7 @@ p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colou
   theme(axis.text.x = element_text(size=9))
 
 p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-ggsave("Figures/Aux_Figure4 .tiff", plot = p, width = 8, height = 6) 
-
-# #Figure 4 auxiliary : NSF + NIH
-# 
-# temp <- na.omit(data[,c("NIH_grants","NSF","AdjSalary")]) #NB some universities that may have NIH or NSF data, but not both, are not included
-# temp$Grants <-temp$NIH_grants + temp$NSF
-# 
-# # i. Boxplots
-# temp_char <- transform(temp, NSF_order= as.character(NSF_order))
-# 
-# p1 <- ggplot(temp_char) +  
-#   geom_boxplot(aes(x=NSF_order, y=AdjSalary),width=0.8, alpha=0.8, color = "lightskyblue4",
-#                outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, 
-#                outlier.color="lightskyblue4", fill = "lightskyblue3")  +
-#   ylim(c(0,100000)) + 
-#   xlab("Descending order of NSF award amount (2017)" ) +
-#   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
-#   theme(axis.text.x = element_text(size=9)) +
-#   ylab("Annual salary (USD)") 
-# 
-# # ii. CV loess
-# cv <- c()
-# for (j in 1:range(temp[,"NSF_order"])[2]){
-#   a<- which(temp$NSF_order == j)
-#   cv <- c(cv, sd(temp$AdjSalary[a], na.rm=T) /mean(temp$AdjSalary[a], na.rm=T) )
-# }
-# 
-# p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colour="grey60") + 
-#   ylab("Coefficient of variation") + xlab("") +
-#   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
-#   theme(axis.text.x = element_text(size=9))
-# 
-# p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-# ggsave("Figure4_Aux .tiff", plot = p, width = 8, height = 6) 
-# 
+ggsave("Figures/Supplementary Figure3 .tiff", plot = p, width = 8, height = 6) 
 
 
 ######################################################################
