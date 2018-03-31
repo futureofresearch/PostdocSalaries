@@ -10,9 +10,9 @@ To protect the identity and sensitive information of the postdocs, the raw salar
 
 • The `Tables/` folder holds auxiliary tables used for the analysis of these data: 
 
-1. _STEM.csv_ carries the STEM/non-STEM annotation used for each department in the dataset
+1. _STEM.csv_ carries the STEM/non-STEM annotation used for each department in the dataset.
 
-2. _TableNIH.csv_ contains the NIH and NSF funding information as described in the manuscript
+2. _TableNIH.csv_ contains the NIH and NSF funding information as described in the manuscript.
 
 • The `Figures/` folder holds the figures as they appear in the table. Feel free to download and use for your presentations but please reference this github repo or the original paper.
 

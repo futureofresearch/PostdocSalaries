@@ -35,9 +35,9 @@ for (i in 1:dim(temp)[1]){
   }
 }
 
-#Supplementary Figure 1
+#Aux Figure
 options(scipen=5)
-tiff("Figures/Supplementary Figure1.tiff")
+tiff("Figures/AuxFigure1.tiff")
 boxplot(temp$AdjSalary[which(temp$Region=="MW")], temp$AdjSalary[which(temp$Region=="NE")],
         temp$AdjSalary[which(temp$Region=="S")], temp$AdjSalary[which(temp$Region=="W")],
         pch=20, names = c("MW","NE","S","W"), xlab="Region", ylab="Salaries" )
@@ -48,7 +48,7 @@ dev.off()
 temp <-  na.omit(data[,c("Institution","AdjSalary", "Department" , "State")])
 temp <- temp[which(temp$Department!=""),]
 
-stem <- read.csv("STEM.csv", col.names=c("Department","is_stem"))
+stem <- read.csv("Tables/STEM.csv", col.names=c("Department","is_stem"))
 
 temp$stem <- ""
   for (i in 1:dim(temp)[1]){
@@ -72,7 +72,7 @@ temp <- temp[index,]
 options(scipen=5)
 tiff("Figures/Supplementary Figure 2A.tiff")
 hist(temp$AdjSalary[which(temp$stem=="No")], breaks=10, col="blue4", 
-     ylim=c(0,200), xlab="Postdoc salaries (USD)", main="")
+     ylim=c(0,100), xlab="Postdoc salaries (USD)", main="")
 dev.off()
 
 temp <- as.data.frame(temp)
@@ -99,36 +99,6 @@ p + geom_boxplot(aes(x=Institution, y=AdjSalary, fill=stem)) +
   facet_wrap(~Region, scales="free_x", strip.position = "bottom")
 
 ggsave("Figures/Supplementary Figure 2B.tiff", width = 8, height = 6) 
-
-#Figure 1 Supplement
-#3. US cultural geography - salary
-
-ne <-c("NY","MA","NJ")
-s <-c("FL","NC","TX","MD","VA")
-mw <-c("MN","IA","MI","OH","IL", "IN")
-w <-c("WA","AZ","CA","CO","UT")
-
-temp <- as.matrix(na.omit(data[,c("AdjSalary", "State", "State")]))
-colnames(temp)<- c("AdjSalary", "Region",   "State")
-for (i in 1:dim(temp)[1]){
-  if (length(which( ne == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "NE"
-  }else if (length(which( s == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "S"
-  }else if(length(which( mw == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "MW"
-  }else if(length(which( w == temp[i,"State"])) > 0){
-    temp[i,"Region"] <- "W"
-  }
-}
-temp <- as.data.frame(temp)
-temp <- transform(temp, AdjSalary = as.character(AdjSalary))
-temp <- transform(temp, AdjSalary = as.numeric(AdjSalary))
-
-g <- ggplot(temp) 
-g + geom_boxplot(aes(x=Region, y=AdjSalary))
-
-ggsave("Suppl1_stem.tiff", width = 8, height = 6) 
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
