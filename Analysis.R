@@ -137,7 +137,7 @@ for (ins in institutions){
   temp$PostdocNum[a] <- length(a)
   }
 
-#Figure 1
+#Figure 2
 
 g <- ggplot(temp, aes(reorder(Institution, PostdocNum), fill = Genni)) +
   scale_fill_manual(values=c("grey50", "lightcoral", "seagreen3"))
@@ -148,10 +148,10 @@ g<- g +  geom_bar(position = "stack") +
   xlab("Complete dataset (by Institution and region)")
  #g+ guides(fill=guide_legend(title="Gender"))
 
-ggsave("Figures/Figure1.tiff", width = 8, height = 8)
+ggsave("Figures/Figure2.tiff", width = 8, height = 8)
 
 
-#Figure 2
+
 
 #Include the Genni unassigned (not in paper)
 g <- ggplot(temp) 
@@ -176,7 +176,7 @@ g + geom_boxplot(aes(x="All", y=AdjSalary, fill=Genni)) +
   scale_fill_manual(values=c( "lightcoral", "seagreen3")) +
   guides(fill=guide_legend(title="Gender")) 
 
-ggsave("Figures/Figure2.tiff", width = 8, height = 7)
+ggsave("Figures/Figure3.tiff", width = 8, height = 7)
 
 #t-test
 
@@ -315,7 +315,7 @@ Residual standard error: 7607 on 13911 degrees of freedom
 Multiple R-squared:  0.08917,	Adjusted R-squared:  0.08845 
 F-statistic: 123.8 on 11 and 13911 DF,  p-value: < 2.2e-16'''
 
-#Figure 3
+#Figure 4
 for (i in 1:dim(temp)[1]){
   for (j in 3:dim(temp)[2]){
     temp[i,j] = temp[i,1]* temp[i,j]}
@@ -330,7 +330,7 @@ p <- ggplot(t,aes(x=variable, y=value)) + geom_violin(fill="grey60", width = 1.2
 p +  geom_boxplot(width=0.1, alpha=0.8,outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, outlier.color="lightskyblue4", fill = "lightskyblue3", color = "lightskyblue4") +
   xlab("Title descriptions")+ylab("Annual salary (USD)") 
 
-ggsave("Figures/Figure3.tiff", width = 8, height = 6)
+ggsave("Figures/Figure4.tiff", width = 8, height = 6)
 
  
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -366,7 +366,7 @@ cor.test(temp[,2], temp[,3])
 # 0.7309787 
 
 write.csv(temp, file="Figures/TableNIH.csv" )
-#Figure 4
+#Figure 5
 
 # i. Boxplots
 temp <- na.omit(data[,c("NIH_order","NIH_grants","AdjSalary")])
@@ -396,7 +396,7 @@ p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NIH_order"])[2]), y=cv), colou
 
 require(cowplot)
 p <- plot_grid(p1, p2, align = 'v',rel_heights = c(7,4), nrow=2)
-ggsave("Figures/Figure4.tiff", plot = p, width = 8, height = 6) 
+ggsave("Figures/Figure5.tiff", plot = p, width = 8, height = 6) 
 
 
 #Supplementary Figure 3 : NSF
