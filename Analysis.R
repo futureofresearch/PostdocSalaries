@@ -72,7 +72,7 @@ temp <- temp[index,]
 options(scipen=5)
 tiff("Figures/Supplementary Figure 2A.tiff")
 hist(temp$AdjSalary[which(temp$stem=="No")], breaks=10, col="blue4", 
-     ylim=c(0,100), xlab="Postdoc salaries (USD)", main="")
+     ylim=c(0,100), xlab="Postdoc salaries (USD)", main="", ylab="Number of postdocs")
 dev.off()
 
 temp <- as.data.frame(temp)
