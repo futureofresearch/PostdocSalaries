@@ -411,7 +411,7 @@ p1 <- ggplot(temp_char) +
                outlier.size = 1, outlier.shape = 3, outlier.alpha = 0.8, 
                outlier.color="lightskyblue4", fill = "lightskyblue3")  +
   ylim(c(0,100000)) + 
-  xlab("Descending order of NSF R&D award amount (2017)" ) +
+  xlab("Descending order of NSF R&D expenditures amount (2017)" ) +
   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
   theme(axis.text.x = element_text(size=9)) +
   ylab("Annual salary (USD)") 
@@ -424,7 +424,7 @@ for (j in 1:range(temp[,"NSF_order"])[2]){
 }
 
 p2 <- ggplot()+geom_smooth(aes(x=c(1:range(temp[,"NSF_order"])[2]), y=cv), colour="grey60") + 
-  ylab("Coefficient of variation") + xlab("") +
+  ylab("Coefficient of variation") + xlab("Descending order of NSF R&D expenditures amount (2017)") +
   scale_x_discrete(limits=as.character(c(1:range(temp[,"NSF_order"])[2]))) +
   theme(axis.text.x = element_text(size=9))
 
